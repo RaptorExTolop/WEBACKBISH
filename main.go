@@ -19,13 +19,20 @@ type Ball struct {
 	colour   rl.Color
 }
 
-var window Window = Window{1280, 720, true, "Game Game", rl.SkyBlue, 0}
-var ball Ball = Ball{20, rl.Vector2{float32(window.Width / 2), float32(window.Height / 2)}, rl.Vector2{0, 0}, 600, rl.RayWhite}
+var window Window = Window{480, 360, true, "Game Game", rl.SkyBlue, 0}
+var ball Ball = Ball{20, rl.Vector2{X: float32(window.Width / 2), Y: float32(window.Height / 2)}, rl.Vector2{X: 0, Y: 0}, 600, rl.RayWhite}
+var tileSetOne TileSet
 
-func main() {
+func init() {
 	rl.InitWindow(window.Width, window.Height, window.Title)
 	//rl.SetTargetFPS(window.TargtFPS)
 
+	ball = Ball{20, rl.Vector2{X: float32(window.Width / 2), Y: float32(window.Height / 2)}, rl.Vector2{X: 0, Y: 0}, 600, rl.RayWhite}
+	window = Window{1280, 720, true, "Game Game", rl.SkyBlue, 0}
+	tileSetOne.loadTiles("loading file path", 32)
+}
+
+func main() {
 	defer rl.CloseWindow()
 
 	for window.Running {
@@ -40,7 +47,7 @@ func update() {
 	window.dt = rl.GetFrameTime()
 	//fmt.Println(window.dt)
 
-	ball.dir = rl.Vector2{0, 0}
+	ball.dir = rl.Vector2{X: 0, Y: 0}
 	if rl.IsKeyDown(rl.KeyW) {
 		ball.dir.Y -= 1
 	}
@@ -66,6 +73,8 @@ func draw() {
 	rl.ClearBackground(window.BkgColour)
 	rl.DrawFPS(0, 0)
 	rl.DrawCircleV(ball.pos, ball.radius, ball.colour)
+	tileSetOne.drawTiles()
+	//rl.DrawRectangleV(rl.Vector2{X: 0, Y: 0}, rl.Vector2{X: 32, Y: 32}, rl.Black)
 
 	rl.EndDrawing()
 }
